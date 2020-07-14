@@ -1,0 +1,84 @@
+import 'react-native-gesture-handler';
+import Global from './app/config/global';
+import React, { Component } from 'react';
+import {
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    StatusBar,
+} from 'react-native';
+import Home from './app/views/Home/Home'
+import ShopCar from './app/views/ShopCar/ShopCar'
+import User from './app/views/User/User'
+import Detail from './app/views/Detail/Detail'
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Icon from 'react-native-vector-icons/AntDesign';
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const TabBarIcon1 = (focused) => {
+    return (
+        <Icon name="home" size={28} color={focused.color} />
+    );
+};
+
+const TabBarIcon2 = (focused) => {
+    return (
+        <Icon name="shoppingcart" size={28} color={focused.color} />
+    );
+};
+
+
+const TabBarIcon3 = (focused) => {
+    return (
+        <Icon name="user" size={28} color={focused.color} />
+    );
+};
+
+
+
+
+class App extends Component {
+    tab() {
+        return (
+            <Tab.Navigator
+                initialRouteName="Home"
+                tabBarOptions={{
+                    activeTintColor: "#ff0000"
+                }}
+            >
+                <Tab.Screen name="Home" component={Home} options={{ title: "首页", tabBarIcon: TabBarIcon1 }} />
+                <Tab.Screen name="ShopCar" component={ShopCar} options={{ title: "购物车", tabBarIcon: TabBarIcon2 }} />
+                <Tab.Screen name="User" component={User} options={{ title: "我的", tabBarIcon: TabBarIcon3 }} />
+            </Tab.Navigator>
+        )
+    }
+    render() {
+        return (
+            <>
+                <StatusBar barStyle="dark-content" />
+                <NavigationContainer>
+                    <Stack.Navigator
+                        headerMode="none"
+                    >
+                        <Stack.Screen name="Tab" component={this.tab} options={{ title: "tab" }} />
+                        <Stack.Screen name="Detail" component={Detail} options={{ title: "商品详情" }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </>
+        )
+    }
+};
+
+const styles = StyleSheet.create({
+
+});
+
+export default App;

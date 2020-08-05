@@ -20,6 +20,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
+import { Provider } from 'react-redux'
+import reducers from './app/store/reducers/index'
+import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux';
+
+let store = createStore(reducers,applyMiddleware(thunk))
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -62,7 +69,7 @@ class App extends Component {
     }
     render() {
         return (
-            <>
+            <Provider store={store}>
                 <StatusBar barStyle="dark-content" />
                 <NavigationContainer>
                     <Stack.Navigator
@@ -72,7 +79,7 @@ class App extends Component {
                         <Stack.Screen name="Detail" component={Detail} options={{ title: "商品详情" }} />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </>
+            </Provider>
         )
     }
 };

@@ -14,6 +14,11 @@ import Swiper from 'react-native-swiper'
 import { ScrollView } from 'react-native-gesture-handler';
 import styles from '../../styles/detail'
 
+import Button from '@ant-design/react-native/lib/button';
+import { connect } from 'react-redux'
+import actions from '../../store/actions/index'
+
+
 class DetailScreen extends Component {
     constructor(props) {
         super(props)
@@ -24,12 +29,13 @@ class DetailScreen extends Component {
             page: {},
             visible: false,
             option: [],
-            optionId: ""
+            optionId: "",
+            count: 1
         }
     }
 
     FetchData() {
-        request(`${base.baseUrl}/home/goods/info?gid=${this.props.route.params.gid}&type=details&token=${base.token}`).then(res => {
+        request(`${base.baseUrl}/home/goods/info?gid=${this.props.state.goodDetail.gid}&type=details&token=${base.token}`).then(res => {
             if (res.code == 200) {
                 this.setState({
                     goodInfo: res.data,
@@ -37,7 +43,7 @@ class DetailScreen extends Component {
                 })
             }
         })
-        request(`${base.baseUrl}/home/reviews/index?gid=${this.props.route.params.gid}&page=1&token=${base.token}`).then(res => {
+        request(`${base.baseUrl}/home/reviews/index?gid=${this.props.state.goodDetail.gid}&page=1&token=${base.token}`).then(res => {
             if (res.code == 200) {
                 this.setState({
                     reviews: res.data,
@@ -48,20 +54,67 @@ class DetailScreen extends Component {
         })
     }
     addCart() {
-        this.setState({ visible: true })
-        request(`${base.baseUrl}/home/goods/info?gid=${this.props.route.params.gid}&type=spec&token=${base.token}`).then(res => {
-            console.log(res)
+        request(`${base.baseUrl}/home/goods/info?gid=${this.props.state.goodDetail.gid}&type=spec&token=${base.token}`).then(res => {
             if (res.code == 200) {
+                let arr = res.data
+                for (let i in arr) {
+                    for (let j in arr[i].values) {
+                        arr[i].values[j].checked = false
+                    }
+                }
                 this.setState({
-                    option: res.data
+                    option: arr,
+                    visible: true
                 })
             }
         })
     }
-    option(value) {
+    option(index, index2) {
+        let arr = this.state.option
+        for (let j in arr[index].values) {
+            arr[index].values[j].checked = false
+        }
+        arr[index].values[index2].checked = true
         this.setState({
-            optionId: value
+            option: arr
         })
+    }
+    more() {
+        this.props.navigation.jumpTo('EvaluateScreen')
+    }
+    handleOk() {
+        let goodData = {
+            gid: this.state.goodInfo.gid,
+            title: this.state.goodInfo.title,
+            amount: this.state.count,
+            price: this.state.count * this.state.goodInfo.price,
+            img: this.state.goodInfo.images[0],
+            checked: true,
+            freight: this.state.goodInfo.freight,
+        }
+        let attrs = [], param = []
+        for (let i in this.state.option) {
+            if (this.state.option[i].values.length > 0) {
+                param = []
+                for (let j in this.state.option[i].values) {
+                    if (this.state.option[i].values[j].checked == true) {
+                        param.push({
+                            paramid: this.state.option[i].values[j].vid,
+                            title: this.state.option[i].values[j].value
+                        })
+                    }
+                }
+                attrs.push({
+                    attrid: this.state.option[i].attrid,
+                    title: this.state.option[i].title,
+                    param: param
+                })
+            }
+        }
+        goodData.attrs = attrs;
+        this.props.dispatch(actions.Cart.addCart(goodData))
+        
+        // this.props.dispatch(actions.goodDetail.saveId({ gid: this.props.route.params.gid }))
     }
     render() {
         return (
@@ -126,11 +179,13 @@ class DetailScreen extends Component {
 
                         {
                             this.state.reviews.length ?
-                                <View style={styles.goodEvaluteMoreWrap}>
-                                    <Text style={styles.goodEvaluteMore}>
-                                        查看更多评价
+                                <TouchableHighlight underlayColor="none" onPress={this.more.bind(this)}>
+                                    <View style={styles.goodEvaluteMoreWrap}>
+                                        <Text style={styles.goodEvaluteMore}>
+                                            查看更多评价
                                     </Text>
-                                </View>
+                                    </View>
+                                </TouchableHighlight>
                                 : null
                         }
                     </View>
@@ -159,7 +214,7 @@ class DetailScreen extends Component {
                     onShow={() => {
 
                     }}>
-                    <View style={styles.modalView}>
+                    <SafeAreaView style={styles.modalView}>
                         <TouchableHighlight underlayColor="none" style={{ flex: 1 }} onPress={() => {
                             this.setState({
                                 visible: false
@@ -204,8 +259,8 @@ class DetailScreen extends Component {
                                                 {
                                                     item.values.map((item2, index2) => {
                                                         return (
-                                                            <TouchableHighlight underlayColor="none" onPress={this.option.bind(this, item2.value)} style={this.state.optionId == item2.value ? styles.optionActive : styles.modalOption} key={index2}>
-                                                                <Text style={this.state.optionId == item2.value ? { color: '#ffffff' } : { color: '#333333' }}>
+                                                            <TouchableHighlight underlayColor="none" onPress={this.option.bind(this, index, index2)} style={item2.checked ? styles.optionActive : styles.modalOption} key={index2}>
+                                                                <Text style={item2.checked ? { color: '#ffffff' } : { color: '#333333' }}>
                                                                     {item2.value}
                                                                 </Text>
                                                             </TouchableHighlight>
@@ -223,20 +278,25 @@ class DetailScreen extends Component {
                                     购买数量
                                     </Text>
                                 <View style={styles.modalCounterWrap}>
-                                    <TouchableHighlight style={styles.modalCounter}>
+                                    <TouchableHighlight underlayColor='none' style={styles.modalCounter} onPress={() => this.state.count > 1 ? this.setState({ count: --this.state.count }) : this.setState({ count: 1 })}>
                                         <Text>-</Text>
                                     </TouchableHighlight>
                                     <View style={styles.modalCounter}>
-                                        <Text>1</Text>
+                                        <Text>{this.state.count}</Text>
                                     </View>
-                                    <TouchableHighlight style={styles.modalCounter}>
+                                    <TouchableHighlight underlayColor='none' style={styles.modalCounter} onPress={() => this.setState({ count: ++this.state.count })}>
                                         <Text>+</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
 
                         </View>
-                    </View>
+                        <TouchableHighlight underlayColor="none" style={styles.certain} onPress={this.handleOk.bind(this)}>
+                            <Text style={{ color: '#ffffff' }}>
+                                确定
+                            </Text>
+                        </TouchableHighlight>
+                    </SafeAreaView>
                 </Modal>
             </SafeAreaView>
         )
@@ -246,4 +306,8 @@ class DetailScreen extends Component {
     }
 }
 
-export default DetailScreen
+export default connect((state) => {
+    return {
+        state
+    }
+})(DetailScreen)

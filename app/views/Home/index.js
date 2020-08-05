@@ -63,8 +63,7 @@ class HomeScreen extends Component {
     }
     detail(gid) {
         this.props.navigation.navigate('Detail', {
-            screen: 'DetailScreen',
-            params: { gid: gid },
+            gid: gid,
         })
     }
 

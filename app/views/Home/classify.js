@@ -22,7 +22,7 @@ class ClassifyScreen extends Component {
             this.state = {
                 classify: [],
                 good: [],
-                cid: null
+                cid: this.props.route.params.cid
             }
     }
     back() {
@@ -50,6 +50,7 @@ class ClassifyScreen extends Component {
         )
     }
     fetchGood() {
+        console.log(this.state.cid)
         request(`${base.baseUrl}/home/category/show?cid=${this.state.cid}&token=${base.token}`).then(res => {
             if (res.code == 200) {
                 this.setState({
@@ -71,8 +72,7 @@ class ClassifyScreen extends Component {
     }
     detail(gid) {
         this.props.navigation.navigate('Detail', {
-            screen: 'DetailScreen',
-            params: { gid: gid },
+            gid: gid,
         })
     }
     render() {
@@ -141,6 +141,7 @@ class ClassifyScreen extends Component {
         )
     }
     componentDidMount() {
+        console.log(this.props.route.params.cid)
         this.fetchData()
         this.fetchGood()
     }

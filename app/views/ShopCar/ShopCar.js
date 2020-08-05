@@ -15,7 +15,9 @@ const Stack = createStackNavigator();
 class ShopCar extends Component {
     render() {
         return (
-            <Stack.Navigator>
+            <Stack.Navigator
+                headerMode="none"
+            >
                 <Stack.Screen name="ShopCarScreen" component={ShopCarScreen} options={{ title: "购物车" }} />
             </Stack.Navigator>
         )

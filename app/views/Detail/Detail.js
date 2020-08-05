@@ -17,6 +17,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import styles from '../../styles/detail';
 import Header from '../../components/header'
 
+import { connect } from 'react-redux'
+import actions from '../../store/actions/index'
+
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -40,6 +43,7 @@ class Detail extends Component {
                             inactiveTintColor: "#333333",
                             showIcon: true
                         }}
+                        lazy={true}
                     >
                         <Tab.Screen name="DetailScreen" options={{ title: "商品" }} component={DetailScreen} />
                         <Tab.Screen name="DetailsScreen" options={{ title: "详情" }} component={DetailsScreen} />
@@ -52,6 +56,14 @@ class Detail extends Component {
 
         )
     }
+    componentWillMount() {
+        this.props.dispatch(actions.goodDetail.saveId({ gid: this.props.route.params.gid }))
+    }
 }
 
-export default Detail
+// export default Detail
+export default connect((state) => {
+    return {
+        state
+    }
+})(Detail)

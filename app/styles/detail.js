@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20
     },
+    goodEvalute1: {
+        marginTop: 0
+    },
     goodEvaluteItem: {
         paddingVertical: 10
     },
@@ -194,7 +197,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 4,
         marginRight: 10
+    },
+    certain: {
+        backgroundColor: '#cf0005',
+        width: '100%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
+
 })
 
 export default styles

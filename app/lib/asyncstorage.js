@@ -34,7 +34,7 @@ class Storage {
      * @returns {Promise<T>|Promise.<TResult>}
      */
     static update(key, value) {
-        return DeviceStorage.get(key).then((item) => {
+        return Storage.get(key).then((item) => {
             value = typeof value === 'string' ? value : Object.assign({}, item, value);
             return AsyncStorage.setItem(key, JSON.stringify(value));
         });

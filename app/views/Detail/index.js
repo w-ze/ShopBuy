@@ -18,6 +18,8 @@ import Button from '@ant-design/react-native/lib/button';
 import { connect } from 'react-redux'
 import actions from '../../store/actions/index'
 
+import BigNumber from "bignumber.js"
+
 
 class DetailScreen extends Component {
     constructor(props) {
@@ -83,13 +85,16 @@ class DetailScreen extends Component {
         this.props.navigation.jumpTo('EvaluateScreen')
     }
     handleOk() {
+        let count = new BigNumber(this.state.count)
+        let price = new BigNumber(this.state.goodInfo.price)
+        console.log(price.times(count).toFixed(2))
         let goodData = {
             gid: this.state.goodInfo.gid,
             title: this.state.goodInfo.title,
             amount: this.state.count,
-            price: this.state.count * this.state.goodInfo.price,
+            price: this.state.goodInfo.price,
             img: this.state.goodInfo.images[0],
-            checked: true,
+            checked: false,
             freight: this.state.goodInfo.freight,
         }
         let attrs = [], param = []
@@ -113,7 +118,7 @@ class DetailScreen extends Component {
         }
         goodData.attrs = attrs;
         this.props.dispatch(actions.Cart.addCart(goodData))
-        
+        console.log(goodData)
         // this.props.dispatch(actions.goodDetail.saveId({ gid: this.props.route.params.gid }))
     }
     render() {

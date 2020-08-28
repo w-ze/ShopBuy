@@ -25,6 +25,7 @@ import reducers from './app/store/reducers/index'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
 
+
 let store = createStore(reducers,applyMiddleware(thunk))
 
 const Tab = createBottomTabNavigator();

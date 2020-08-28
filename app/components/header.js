@@ -18,9 +18,10 @@ class Header extends Component {
         return (
             <View style={styles.header}>
                 <View style={styles.left}>
-                    <TouchableHighlight underlayColor="none" onPress={this.props.back.bind(this)}>
-                        <Icon style={styles.leftButton} name='angle-left' size={30} />
-                    </TouchableHighlight>
+                    {this.props.left ?
+                        <TouchableHighlight underlayColor="none" onPress={this.props.back.bind(this)}>
+                            <Icon style={styles.leftButton} name='angle-left' size={30} />
+                        </TouchableHighlight> : null}
                 </View>
 
                 <View style={styles.titleWrap}>

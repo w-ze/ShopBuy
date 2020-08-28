@@ -80,7 +80,7 @@ class ClassifyScreen extends Component {
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={{ backgroundColor: '#ffffff' }}></SafeAreaView>
                 <SafeAreaView style={{ flex: 1 }}>
-                    <Header title="商品分类" back={this.back.bind(this)}></Header>
+                    <Header left={true} title="商品分类" back={this.back.bind(this)}></Header>
                     <View style={styles.content}>
                         <View style={styles.classifyWrap}>
                             <FlatList

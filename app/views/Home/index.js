@@ -16,6 +16,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import LazyImage from 'animated-lazy-image';
 
+import Storage from '../../lib/asyncstorage'
+import actions from '../../store/actions/index'
+import { connect } from 'react-redux';
+
 class HomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -295,8 +299,18 @@ class HomeScreen extends Component {
     }
 
     componentDidMount() {
+        Storage.get('cartData').then(data => {
+            console.log(data)
+            if (data) {
+                this.props.dispatch(actions.Cart.initCart(data))
+            }
+        })
         this.fetchData()
     }
 }
 
-export default HomeScreen
+export default connect((state) => {
+    return {
+        state
+    }
+})(HomeScreen)

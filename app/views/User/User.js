@@ -16,7 +16,7 @@ class User extends Component {
     render() {
         return (
             <Stack.Navigator>
-                <Stack.Screen name="UserScreen" component={UserScreen} options={{ title: "我的" }} />
+                <Stack.Screen name="UserScreen" component={UserScreen} options={{ title: "个人中心" }} />
             </Stack.Navigator>
         )
     }

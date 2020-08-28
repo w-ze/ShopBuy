@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    SafeAreaView
+    SafeAreaView,
+    TouchableHighlight
 } from 'react-native'
 
 import DetailsScreen from './details'
@@ -30,13 +31,18 @@ class Detail extends Component {
     back() {
         this.props.navigation.goBack()
     }
+    shopCart() {
+        this.props.navigation.navigate('ShopCarScreen')
+    }
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={{ backgroundColor: '#ffffff' }}></SafeAreaView>
                 <SafeAreaView style={{ flex: 1 }}>
-                    <Header title="商品详情" back={this.back.bind(this)}>
+                    <Header left={true} title="商品详情" back={this.back.bind(this)}>
+                        <TouchableHighlight underlayColor="none" onPress={this.shopCart.bind(this)}>
                         <Icon name="shoppingcart" size={28} color="#333333" />
+                        </TouchableHighlight>
                     </Header>
                     <Tab.Navigator
                         tabBarOptions={{
@@ -56,7 +62,7 @@ class Detail extends Component {
 
         )
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.dispatch(actions.goodDetail.saveId({ gid: this.props.route.params.gid }))
     }
 }

@@ -43,15 +43,15 @@ function fetchRequest(url, type = "get", data = {}) {
     let params = "", headers = {}, config = {};
     if (type === 'file') {
         type = "post";
-        if (data instanceof Object) {
-            params = new FormData();
-            for (let key in data) {
-                params.append(key, data[key]);
-            }
-        }
+        // if (data instanceof Object) {
+        //     params = new FormData();
+        //     for (let key in data) {
+        //         params.append(key, data[key]);
+        //     }
+        // }
         config = {
             method: type,
-            body: params
+            body: data
         }
     } else if (type === 'get') {
         config = {

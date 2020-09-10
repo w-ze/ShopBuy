@@ -300,9 +300,13 @@ class HomeScreen extends Component {
 
     componentDidMount() {
         Storage.get('cartData').then(data => {
-            console.log(data)
             if (data) {
                 this.props.dispatch(actions.Cart.initCart(data))
+            }
+        })
+        Storage.get('userData').then(data => {
+            if (data) {
+                this.props.dispatch(actions.User.initUser(data))
             }
         })
         this.fetchData()

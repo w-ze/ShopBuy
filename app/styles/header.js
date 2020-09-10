@@ -7,14 +7,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomColor: '#eeeeee',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        justifyContent:'space-between',
+        paddingHorizontal:15
     },
     left: {
-        width: 60
+        // width: 60
     },
     leftButton: {
         fontSize: 40,
-        padding: 10,
+        // padding: 10,
     },
     titleWrap: {
         flex: 1,
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     right: {
-        width: 60
+        // width: 60
     }
 })
 

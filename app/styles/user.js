@@ -89,6 +89,50 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#ffffff'
+    },
+    loginWrap: {
+        alignItems: 'center',
+        padding: 20
+    },
+    input: {
+        height: 40,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#efefef',
+        width: '100%',
+        marginBottom: 20
+    },
+    loginButton: {
+        backgroundColor: '#e32025',
+        width: '100%',
+        borderRadius: 5,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 18
+    },
+    forgetWrap: {
+        justifyContent: 'space-between',
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 20
+    },
+    forget: {
+        flexDirection: 'row'
+    },
+    forgetImage: {
+        width: 18,
+        height: 18
+    },
+    forgetText: {
+        fontSize: 16
+    },
+    contentHeaderItem: {
+        height: 80
+    },
+    rightWrap: {
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 })
 

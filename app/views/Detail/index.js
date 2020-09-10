@@ -208,7 +208,7 @@ class DetailScreen extends Component {
                     </TouchableHighlight>
                 </View>
                 <Modal
-                    animationType="fade"
+                    animationType="none"
                     visible={this.state.visible}
                     transparent={true}
                     onRequestClose={() => {

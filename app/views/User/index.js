@@ -15,7 +15,36 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 import Button from '@ant-design/react-native/lib/button'
 
+import { connect } from 'react-redux'
+
+import { request } from '../../lib/request'
+
 class UserScreen extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            userInfo: {}
+        }
+    }
+    login() {
+        this.props.navigation.navigate('LoginScreen')
+    }
+    getUserInfo() {
+        request(`${base.baseUrl}/user/myinfo/userinfo/uid/${this.props.state.User.uid}?token=${base.token}`).then(res => {
+            console.log(res)
+            if (res.code == 200) {
+                this.setState({ userInfo: res.data })
+            }
+        })
+    }
+    goProfile() {
+        this.props.navigation.navigate('ProfileScreen', {
+            uid: this.state.userInfo.uid,
+            gender: this.state.userInfo.gender,
+            head: this.state.userInfo.head,
+            nickname: this.state.userInfo.nickname
+        })
+    }
     render() {
         return (
             <View>
@@ -24,15 +53,15 @@ class UserScreen extends Component {
                     <ScrollView>
                         <View style={styles.top}>
                             <View style={styles.headerWrap}>
-                                <Image style={styles.header} source={require('../../assets/image/user.png')} />
+                                <Image style={styles.header} source={{ uri: 'http:' + this.state.userInfo.head }} />
                             </View>
                             <View style={styles.nameWrap}>
                                 <Text style={styles.nickName}>
-                                    昵称
-                            </Text>
+                                    {this.state.userInfo.nickname}
+                                </Text>
                                 <Text style={styles.nickName}>
-                                    我的积分：0
-                            </Text>
+                                    我的积分：{this.state.userInfo.points}
+                                </Text>
                             </View>
                         </View>
                         <View style={styles.orderAllWrap}>
@@ -55,7 +84,7 @@ class UserScreen extends Component {
                                     {/* <View style={styles.text}> */}
                                     <Text style={styles.statusText}>
                                         待支付
-                                </Text>
+                                    </Text>
                                     {/* </View> */}
                                 </View>
                             </TouchableHighlight>
@@ -85,12 +114,14 @@ class UserScreen extends Component {
                             </TouchableHighlight>
                         </View>
                         <View style={styles.contentWrap}>
-                            <View style={styles.contentItem}>
-                                <Text style={styles.contentText}>
-                                    个人资料
-                                </Text>
-                                <Icon name="right" size={20} />
-                            </View>
+                            <TouchableHighlight underlayColor="none" onPress={this.goProfile.bind(this)}>
+                                <View style={styles.contentItem}>
+                                    <Text style={styles.contentText}>
+                                        个人资料
+                                    </Text>
+                                    <Icon name="right" size={20} />
+                                </View>
+                            </TouchableHighlight>
                             <View style={styles.contentItem}>
                                 <Text style={styles.contentText}>
                                     收货地址
@@ -116,7 +147,7 @@ class UserScreen extends Component {
                                 <Icon name="right" size={20} />
                             </View>
                             <View style={styles.buttonWrap}>
-                                <TouchableHighlight style={styles.button}>
+                                <TouchableHighlight style={styles.button} underlayColor="none" onPress={this.login.bind(this)}>
                                     <Text style={styles.buttonText}>
                                         登录/注册
                                 </Text>
@@ -129,6 +160,14 @@ class UserScreen extends Component {
             </View>
         )
     }
+    componentDidMount() {
+        this.getUserInfo()
+    }
 }
 
-export default UserScreen
+export default connect((state) => {
+    console.log(state)
+    return {
+        state
+    }
+})(UserScreen)

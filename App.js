@@ -24,9 +24,10 @@ import { Provider } from 'react-redux'
 import reducers from './app/store/reducers/index'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
+import LoginScreen from './app/views/User/login'
+import ProfileScreen from './app/views/User/profile'
 
-
-let store = createStore(reducers,applyMiddleware(thunk))
+let store = createStore(reducers, applyMiddleware(thunk))
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -78,6 +79,8 @@ class App extends Component {
                     >
                         <Stack.Screen name="Tab" component={this.tab} options={{ title: "tab" }} />
                         <Stack.Screen name="Detail" component={Detail} options={{ title: "商品详情" }} />
+                        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: "会员登录" }} />
+                        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ title: "个人资料" }} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </Provider>

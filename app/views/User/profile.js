@@ -48,11 +48,9 @@ class ProfileScreen extends Component {
             headName: ''
         }
     }
+    
     back() {
         this.props.navigation.goBack()
-
-
-        
     }
     openDialog() {
         this.setState({

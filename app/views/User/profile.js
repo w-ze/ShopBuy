@@ -48,7 +48,7 @@ class ProfileScreen extends Component {
             headName: ''
         }
     }
-    back1() {
+    back3() {
         this.props.navigation.goBack()
     }
     back() {

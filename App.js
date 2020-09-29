@@ -26,6 +26,8 @@ import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
 import LoginScreen from './app/views/User/login'
 import ProfileScreen from './app/views/User/profile'
+import SearchScreen from './app/views/Search/search'
+import ResultScreen from './app/views/Search/result'
 
 let store = createStore(reducers, applyMiddleware(thunk))
 
@@ -81,6 +83,8 @@ class App extends Component {
                         <Stack.Screen name="Detail" component={Detail} options={{ title: "商品详情" }} />
                         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: "会员登录" }} />
                         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ title: "个人资料" }} />
+                        <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ title: "搜索" }} />
+                        <Stack.Screen name="ResultScreen" component={ResultScreen} options={{ title: "搜索结果" }} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </Provider>

@@ -6,7 +6,8 @@ import {
     SafeAreaView,
     ScrollView,
     Image,
-    TouchableHighlight
+    TouchableHighlight,
+    DeviceEventEmitter
 } from 'react-native'
 
 import styles from '../../styles/user'
@@ -162,6 +163,11 @@ class UserScreen extends Component {
     }
     componentDidMount() {
         this.getUserInfo()
+        DeviceEventEmitter.addListener('refresh', (message) => {
+            if (message) {
+                this.getUserInfo()
+            }
+        })
     }
 }
 

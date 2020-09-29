@@ -70,6 +70,9 @@ class HomeScreen extends Component {
             gid: gid,
         })
     }
+    goSearch(){
+        this.props.navigation.navigate('SearchScreen')
+    }
 
     render() {
         return (
@@ -80,7 +83,7 @@ class HomeScreen extends Component {
                         <TouchableHighlight underlayColor="none" onPress={this.classify.bind(this, 492)}>
                             <Icon name='list-ul' size={30} color="#ffffff" />
                         </TouchableHighlight>
-                        <TouchableHighlight style={{ flex: 1 }} underlayColor="none" onPress={() => alert(1)}>
+                        <TouchableHighlight style={{ flex: 1 }} underlayColor="none" onPress={this.goSearch.bind(this)}>
                             <View style={styles.search}>
                                 <Icon name='search' size={18} color="#f0e0dc" />
                                 <Text style={styles.searchText}>请输入宝贝名称</Text>

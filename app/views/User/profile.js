@@ -6,7 +6,8 @@ import {
     SafeAreaView,
     Image,
     TouchableHighlight,
-    TextInput
+    TextInput,
+    DeviceEventEmitter
 } from 'react-native'
 
 import Header from '../../components/header'
@@ -43,20 +44,22 @@ class ProfileScreen extends Component {
                     value: '2',
                     title: '女'
                 }
-            ]
+            ],
+            headName: ''
         }
     }
     back() {
         this.props.navigation.goBack()
+        
     }
     openDialog() {
         this.setState({
-            visible: true
+            dialogVisible: true
         })
     }
     closeDialog() {
         this.setState({
-            visible: false
+            dialogVisible: false
         })
     }
     click(index) {
@@ -79,23 +82,34 @@ class ProfileScreen extends Component {
                 cropperCancelText: '取消',
                 loadingLabelText: '加载中'
             }).then(image => {
-                console.log(image);
                 this.closeDialog()
                 this.uploadHeader(image)
             });
         }
     }
     uploadHeader(image) {
+        console.log(image)
         const formData = new FormData();
         const file = {
             uri: image.path,
             type: image.mime,
-            name: image.filename,
+            name: image.filename?image.filename:'image.jpg',
             size: image.size,
         };
         formData.append('headfile', file);
         console.log(formData)
-        request(`${base.baseUrl}/user/myinfo/formdatahead?token=${base.token}`, 'file', formData).then(res => {
+        console.log(`${base.baseUrl}/user/myinfo/formdatahead?token=${base.token}`)
+        request(`${base.baseUrl}/user/myinfo/formdatahead?token=${base.token}`, 'file',formData).then(res => {
+            console.log(res)
+            if (res.code == 200) {
+                this.setState({
+                    head: `//vueshop.glbuys.com/userfiles/head/${res.data.msbox}`,
+                    headName: res.data.msbox
+                }, () => {
+                    console.log(this.state.head)
+                })
+            }
+        }).catch(res=>{
             console.log(res)
         })
     }
@@ -113,6 +127,26 @@ class ProfileScreen extends Component {
     changeGender() {
         this.setState({
             pickerVisible: true
+        })
+    }
+    save() {
+        console.log(this.state.gender, this.state.nickname, this.state.head)
+        request(`${base.baseUrl}/user/myinfo/updateuser?token=${base.token}`, 'post', {
+            uid: this.state.uid,
+            gender: this.state.gender,
+            head: this.state.headName,
+            nickname: this.state.nickname,
+        }).then(res => {
+            console.log(res)
+            if (res.code == 200) {
+                this.props.navigation.navigate('UserScreen')
+                DeviceEventEmitter.emit('refresh', {
+                    'newMessage': '新消息',
+                    'messageCount': 5,
+                })
+            } else {
+
+            }
         })
     }
     selectImage() {
@@ -141,7 +175,9 @@ class ProfileScreen extends Component {
                 <SafeAreaView style={{ backgroundColor: '#fff' }}></SafeAreaView>
                 <SafeAreaView>
                     <Header title="个人资料" left={true} back={this.back.bind(this)}>
-                        {/* <Icon name="check" size={24} color="#e83e36"></Icon> */}
+                        <TouchableHighlight underlayColor="none" onPress={this.save.bind(this)}>
+                            <Icon name="check" size={24} color="#e83e36"></Icon>
+                        </TouchableHighlight>
                     </Header>
                     <View style={styles.content}>
                         <TouchableHighlight underlayColor="none" onPress={this.openDialog.bind(this)}>
@@ -163,7 +199,7 @@ class ProfileScreen extends Component {
                                 </Text>
                             <View style={{ flexDirection: 'row' }}>
                                 {/* <Text style={styles.contentText}> */}
-                                <TextInput value={this.state.nickname} onChangeText={text => this.setState({ nickname: text })}></TextInput>
+                                <TextInput style={styles.input} value={this.state.nickname} onChangeText={text => this.setState({ nickname: text })}></TextInput>
 
                                 {/* </Text> */}
                                 <Icon style={{ marginLeft: 20 }} name="right" size={20} />
@@ -191,6 +227,8 @@ class ProfileScreen extends Component {
         )
     }
     componentDidMount() {
+       
+       
         console.log(this.props)
     }
 }

@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     contentText: {
-        fontSize: 20
+        fontSize: 20,
     },
     buttonWrap: {
         alignItems: 'center',
@@ -94,13 +94,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20
     },
-    input: {
+    input1: {
         height: 40,
         borderRadius: 4,
         borderWidth: 1,
         borderColor: '#efefef',
         width: '100%',
-        marginBottom: 20
+        marginBottom: 20,
     },
     loginButton: {
         backgroundColor: '#e32025',
@@ -133,6 +133,11 @@ const styles = StyleSheet.create({
     rightWrap: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    input: {
+        width: 200,
+        fontSize: 20,
+        textAlign:'right'
     }
 })
 

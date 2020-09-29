@@ -66,15 +66,16 @@ class LoginScreen extends Component {
                     <Header title="登录" />
                     <View style={styles.loginWrap}>
                         <TextInput
-                            style={styles.input}
+                            style={styles.input1}
                             onChangeText={text => this.onChangeUsername(text)}
                             value={this.state.username}
                             autoComplete="username"
                             clearButtonMode="while-editing"
                             placeholder="用户名"
                         />
+
                         <TextInput
-                            style={styles.input}
+                            style={styles.input1}
                             onChangeText={text => this.onChangePassWord(text)}
                             value={this.state.password}
                             autoComplete="password"
